@@ -1,0 +1,257 @@
+Build a complete full-stack web application called TalkEasy – AI Mental Wellness Platform.
+
+The goal of this app is to provide users with AI-powered emotional support, habit tracking, and mental health progress insights.
+
+---
+
+GENERAL REQUIREMENTS
+
+Create a modern web application with:
+
+Frontend:
+React
+
+Backend:
+Node.js + Express
+
+Database:
+MongoDB
+
+Charts:
+Chart.js
+
+Styling:
+Modern clean UI using CSS or Tailwind.
+
+---
+
+APPLICATION PURPOSE
+
+TalkEasy should help users:
+
+• talk to an AI therapist
+• track daily mood
+• track positive habits
+• receive practical self-help steps
+• analyze emotional progress over time
+
+---
+
+AUTHENTICATION SYSTEM
+
+Implement a secure authentication system.
+
+Users should be able to:
+
+• Sign up
+• Log in
+• Log out
+
+Store user information in MongoDB.
+
+User fields:
+
+name
+email
+password
+ageGroup
+preferredLanguage
+
+---
+
+AGE GROUP PERSONALIZATION
+
+During signup users must select their age group:
+
+Teen (13–19)
+Young Adult (20–40)
+Middle Age (40–60)
+Senior (60+)
+
+AI responses should adapt according to the age group.
+
+Example:
+
+Teen → exam stress advice
+Young Adult → work stress advice
+Senior → loneliness support
+
+---
+
+AI THERAPIST CHATBOT
+
+Create an AI therapist chatbot.
+
+The chatbot should:
+
+• listen to emotional problems
+• respond with supportive messages
+• provide practical self-help suggestions
+
+Example:
+
+User:
+"I feel very stressed."
+
+AI:
+"I understand stress can feel overwhelming. Let’s try a simple breathing exercise."
+
+---
+
+EMOTION DETECTION
+
+The AI should detect emotional tone from user messages.
+
+Detect emotions such as:
+
+stress
+sadness
+anxiety
+loneliness
+anger
+happiness
+
+Store detected emotion in the database.
+
+---
+
+PRACTICAL SELF-HELP SUGGESTIONS
+
+When negative emotions are detected the AI should suggest actions such as:
+
+• breathing exercises
+• short walk
+• meditation
+• drinking water
+• journaling
+• talking to a friend
+
+---
+
+FOLLOW-UP SYSTEM
+
+When the user returns later the AI should ask:
+
+"Did you try the steps I suggested earlier?"
+
+Track completed suggestions.
+
+---
+
+MOOD TRACKER
+
+Users can record their daily mood.
+
+Mood options:
+
+Happy
+Neutral
+Stressed
+Sad
+
+Store daily mood records in MongoDB.
+
+---
+
+HABIT TRACKER
+
+Create a habit tracking system.
+
+Users can track habits such as:
+
+• meditation
+• exercise
+• sleep
+• hydration
+• journaling
+
+Each habit should store:
+
+date
+completed or not
+notes
+
+---
+
+STATISTICS DASHBOARD
+
+Create a dashboard showing mental wellness progress.
+
+Use Chart.js to display:
+
+Mood trend over time
+
+Emotion distribution
+
+Habit completion rate
+
+Self-care progress
+
+---
+
+EMOTIONAL HISTORY PAGE
+
+Users should be able to view their emotional history.
+
+Display:
+
+date
+detected emotion
+AI suggestion
+mood entry
+
+---
+
+MULTILINGUAL SUPPORT
+
+Add language selector with:
+
+English
+Hindi
+Urdu
+
+Chatbot responses and UI labels should change according to selected language.
+
+---
+
+CRISIS DETECTION
+
+Detect dangerous phrases such as:
+
+"I want to end my life"
+
+If detected:
+
+show supportive message
+display mental health helpline
+encourage contacting trusted people
+
+---
+
+FRONTEND PAGES
+
+Create these pages:
+
+Login
+Signup
+Dashboard
+Chatbot
+Therapist Mode
+Mood Tracker
+Habit Tracker
+Statistics Dashboard
+Emotional History
+
+Navigation should work correctly between pages.
+
+---
+
+FINAL RESULT
+
+Return a fully working TalkEasy web application with:
+
+complete frontend
+complete backend
+MongoDB database integration
+
+Ensure the application runs properly and the UI is clean, responsive, and user-friendly.
