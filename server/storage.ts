@@ -1,38 +1,57 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { db } from "./db";
+import { 
+  users, moods, habits, conversations, messages,
+  type User, type InsertMood, type Mood, type InsertHabit, type Habit
+} from "@shared/schema";
+import { eq, desc, and } from "drizzle-orm";
 
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // Moods
+  getMoods(userId: string): Promise<Mood[]>;
+  createMood(userId: string, mood: InsertMood): Promise<Mood>;
+  
+  // Habits
+  getHabits(userId: string, date?: string): Promise<Habit[]>;
+  createHabit(userId: string, habit: InsertHabit): Promise<Habit>;
+  updateHabit(id: number, updates: Partial<InsertHabit>): Promise<Habit>;
+
+  // User
+  updateUser(id: string, updates: Partial<User>): Promise<User>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
+export class DatabaseStorage implements IStorage {
+  async getMoods(userId: string): Promise<Mood[]> {
+    return await db.select().from(moods).where(eq(moods.userId, userId)).orderBy(desc(moods.date));
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async createMood(userId: string, insertMood: InsertMood): Promise<Mood> {
+    const [mood] = await db.insert(moods).values({ ...insertMood, userId }).returning();
+    return mood;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async getHabits(userId: string, date?: string): Promise<Habit[]> {
+    let query = db.select().from(habits).where(eq(habits.userId, userId));
+    if (date) {
+      // Basic date match
+      query = query.where(eq(habits.date, date));
+    }
+    return await query;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+  async createHabit(userId: string, insertHabit: InsertHabit): Promise<Habit> {
+    const [habit] = await db.insert(habits).values({ ...insertHabit, userId }).returning();
+    return habit;
+  }
+
+  async updateHabit(id: number, updates: Partial<InsertHabit>): Promise<Habit> {
+    const [habit] = await db.update(habits).set(updates).where(eq(habits.id, id)).returning();
+    return habit;
+  }
+
+  async updateUser(id: string, updates: Partial<User>): Promise<User> {
+    const [user] = await db.update(users).set(updates).where(eq(users.id, id)).returning();
     return user;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
