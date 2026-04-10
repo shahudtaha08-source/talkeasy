@@ -1,67 +1,142 @@
-import { Leaf, Shield, Heart, Sparkles } from "lucide-react";
+import React from "react";
 
 export default function Landing() {
-  const handleLogin = () => {
-    window.location.href = "/api/login";
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 dark:from-slate-950 dark:to-teal-950 flex flex-col">
-      <header className="px-8 py-6 flex justify-between items-center max-w-7xl mx-auto w-full">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-xl bg-teal-500 flex items-center justify-center text-white shadow-lg">
-            <Leaf className="w-6 h-6" />
-          </div>
-          <span className="font-display font-bold text-2xl text-slate-800 dark:text-white">TalkEasy</span>
-        </div>
-        <button 
-          onClick={handleLogin}
-          className="px-6 py-2.5 rounded-full bg-white dark:bg-slate-800 text-teal-600 dark:text-teal-400 font-semibold shadow-sm hover:shadow-md transition-all border border-teal-100 dark:border-teal-900"
-        >
-          Log In
-        </button>
-      </header>
-
-      <main className="flex-1 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto mt-[-10vh]">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100/50 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 font-medium mb-8 text-sm border border-teal-200 dark:border-teal-800">
-          <Sparkles className="w-4 h-4" />
-          Your Safe Space for Mental Wellness
-        </div>
-        
-        <h1 className="text-5xl md:text-7xl font-display font-bold text-slate-900 dark:text-white leading-tight mb-6">
-          Find clarity through <br className="hidden md:block"/>
-          <span className="text-gradient">compassionate AI conversation.</span>
-        </h1>
-        
-        <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-2xl leading-relaxed">
-          TalkEasy combines AI therapy chat, mood tracking, and habit building to help you understand your emotions and foster a healthier mind every single day.
+    <div className="min-h-screen bg-gray-50 text-gray-800">
+      {/* HERO */}
+      <section className="text-center py-20 px-6 bg-gradient-to-r from-teal-500 to-blue-600 text-white">
+        <h1 className="text-5xl font-bold mb-4">TalkEasy</h1>
+        <p className="text-xl max-w-2xl mx-auto">
+          An AI-powered mental wellness platform that helps you talk openly,
+          track emotions, build healthy habits and improve your mental
+          wellbeing.
         </p>
 
-        <button 
-          onClick={handleLogin}
-          className="px-8 py-4 rounded-full bg-teal-600 hover:bg-teal-500 text-white font-bold text-lg shadow-xl shadow-teal-600/30 hover:-translate-y-1 transition-all duration-300 flex items-center gap-2"
-        >
-          Get Started for Free
-        </button>
+        <div className="mt-8 flex justify-center gap-4">
+          <a
+            href="/dashboard"
+            className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold shadow"
+          >
+            Go to Dashboard
+          </a>
 
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 text-left w-full">
-          <div className="glass-card p-6 rounded-2xl">
-            <Heart className="w-10 h-10 text-rose-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">AI Therapist Chat</h3>
-            <p className="text-muted-foreground">A non-judgmental space to express your feelings and get actionable advice.</p>
+          <a href="/login" className="border border-white px-6 py-3 rounded-xl">
+            Login
+          </a>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="py-20 px-6 max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-12">
+          Platform Features
+        </h2>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h3 className="text-xl font-semibold mb-2">AI Therapist Chat</h3>
+            <p>
+              Talk with an AI therapist that listens to your problems and
+              provides supportive responses and practical guidance.
+            </p>
           </div>
-          <div className="glass-card p-6 rounded-2xl">
-            <Shield className="w-10 h-10 text-blue-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">Private & Secure</h3>
-            <p className="text-muted-foreground">Your emotional history and daily habits are kept entirely private.</p>
+
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h3 className="text-xl font-semibold mb-2">Mood Tracking</h3>
+            <p>
+              Track your emotional state daily and understand how your mood
+              evolves over time.
+            </p>
           </div>
-          <div className="glass-card p-6 rounded-2xl">
-            <Leaf className="w-10 h-10 text-teal-500 mb-4" />
-            <h3 className="text-xl font-bold mb-2">Holistic Growth</h3>
-            <p className="text-muted-foreground">Track moods, build positive habits, and see your progress over time.</p>
+
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h3 className="text-xl font-semibold mb-2">Habit Tracker</h3>
+            <p>
+              Build positive habits like meditation, exercise and journaling
+              while monitoring your progress.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h3 className="text-xl font-semibold mb-2">Emotional History</h3>
+            <p>
+              View your past emotions, conversations and insights generated by
+              the AI system.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h3 className="text-xl font-semibold mb-2">Statistics Dashboard</h3>
+            <p>
+              Visualize your mental wellness journey with graphs and progress
+              insights.
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow">
+            <h3 className="text-xl font-semibold mb-2">Multilingual Support</h3>
+            <p>
+              Use TalkEasy in multiple languages to make emotional support
+              accessible for everyone.
+            </p>
           </div>
         </div>
-      </main>
+      </section>
+
+      {/* FOUNDER */}
+      <section className="py-20 bg-white text-center px-6">
+        <h2 className="text-3xl font-bold mb-6">Meet the Founder</h2>
+
+        <div className="max-w-3xl mx-auto">
+          <h3 className="text-xl font-semibold text-blue-600 mb-3">
+            Taha Shahud – Student Developer
+          </h3>
+
+          <p className="text-gray-600 mb-4">
+            Taha Shahud is the creator of TalkEasy, an AI-powered mental
+            wellness platform designed to support people through intelligent
+            conversations, mood tracking, habit development and emotional
+            analytics.
+          </p>
+
+          <p className="text-gray-600 mb-8">
+            Currently pursuing studies at MGM University, Taha focuses on
+            building technology that combines artificial intelligence with human
+            wellbeing to solve real-world problems.
+          </p>
+
+          <div className="flex justify-center gap-4">
+            <a
+              href="https://taha-personal.netlify.app"
+              target="_blank"
+              className="bg-blue-600 text-white px-5 py-2 rounded-lg"
+            >
+              Portfolio
+            </a>
+
+            <a
+              href="https://github.com/"
+              target="_blank"
+              className="bg-gray-800 text-white px-5 py-2 rounded-lg"
+            >
+              GitHub
+            </a>
+
+            <a
+              href="https://linkedin.com/"
+              target="_blank"
+              className="bg-blue-700 text-white px-5 py-2 rounded-lg"
+            >
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="text-center py-6 bg-gray-100 text-gray-500">
+        © {new Date().getFullYear()} TalkEasy – Built by Taha Shahud
+      </footer>
     </div>
   );
 }
