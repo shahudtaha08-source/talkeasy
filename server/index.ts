@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config();
+console.log("KEY:",process.env.OPENAI_API_KEY);
+console.log("BASE URL:",process.env.OPENAI_BASE_URL);
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
@@ -21,6 +25,15 @@ app.use(
 );
 
 app.use(express.urlencoded({ extended: false }));
+
+// Minimal CORS for local dev (frontend -> backend)
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") return res.status(204).end();
+  next();
+});
 
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {

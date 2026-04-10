@@ -1,44 +1,15 @@
 import { MessageCircle } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import {
-  useConversations,
-  useConversationHistory,
-  useCreateConversation,
-} from "@/hooks/use-chat";
 import { Send, Plus, Loader2, Bot, User as UserIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Chatbot() {
-  const { data: conversations, isLoading: loadingConvos } = useConversations();
-  const { mutateAsync: createConvo } = useCreateConversation();
-
-  const [activeId, setActiveId] = useState<number | null>(null);
-  const { data: history, isLoading: loadingHistory } =
-    useConversationHistory(activeId);
-
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<any[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [loadingHistory, setLoadingHistory] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Set initial active conversation or create one
-  useEffect(() => {
-    if (!loadingConvos && conversations) {
-      if (conversations.length > 0 && !activeId) {
-        setActiveId(conversations[0].id);
-      } else if (conversations.length === 0) {
-        handleNewChat();
-      }
-    }
-  }, [conversations, loadingConvos]);
-
-  // Sync history when activeId changes
-  useEffect(() => {
-    if (history) {
-      setMessages(history);
-    }
-  }, [history]);
 
   // Auto scroll to bottom
   useEffect(() => {
@@ -46,15 +17,12 @@ export default function Chatbot() {
   }, [messages]);
 
   const handleNewChat = async () => {
-    const newConvo = await createConvo({
-      title: `Session ${new Date().toLocaleDateString()}`,
-    });
-    setActiveId(newConvo.id);
+    setMessages([]);
   };
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || !activeId || isStreaming) return;
+    if (!input.trim() || isStreaming) return;
 
     const userMessage = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
@@ -66,51 +34,24 @@ export default function Chatbot() {
     setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
 
     try {
-      const response = await fetch(`/api/conversations/${activeId}/messages`, {
+      const response = await fetch("http://localhost:5000/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: userMessage.content }),
+        body: JSON.stringify({ message: userMessage.content }),
       });
 
-      if (!response.ok) throw new Error("Failed");
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let assistantText = "";
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split("\n");
-
-          for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              try {
-                const data = JSON.parse(line.slice(6));
-                if (data.content) {
-                  assistantText += data.content;
-                  setMessages((prev) => {
-                    const newMsgs = [...prev];
-                    newMsgs[assistantMessageIdx] = {
-                      role: "assistant",
-                      content: assistantText,
-                    };
-                    return newMsgs;
-                  });
-                }
-                if (data.done) {
-                  setIsStreaming(false);
-                }
-              } catch (e) {
-                // Ignore parse errors on incomplete chunks
-              }
-            }
-          }
-        }
+      const data = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(data?.error ?? "AI request failed");
       }
+
+      const reply = data?.reply ?? "";
+      setMessages((prev) => {
+        const newMsgs = [...prev];
+        newMsgs[assistantMessageIdx] = { role: "assistant", content: reply };
+        return newMsgs;
+      });
+      setIsStreaming(false);
     } catch (error) {
       console.error(error);
       setIsStreaming(false);
@@ -130,24 +71,9 @@ export default function Chatbot() {
           </button>
         </div>
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
-          {conversations?.map((c: any) => (
-            <button
-              key={c.id}
-              onClick={() => setActiveId(c.id)}
-              className={`w-full text-left p-4 rounded-xl transition-all ${
-                activeId === c.id
-                  ? "bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 shadow-sm"
-                  : "hover:bg-slate-50 dark:hover:bg-slate-800"
-              }`}
-            >
-              <p className="font-semibold text-slate-800 dark:text-slate-200 truncate">
-                {c.title}
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {new Date(c.createdAt).toLocaleDateString()}
-              </p>
-            </button>
-          ))}
+          <div className="text-sm text-muted-foreground p-4">
+            This demo chat runs locally (no DB required).
+          </div>
         </div>
       </div>
 
